@@ -1,0 +1,3 @@
+{"level":"info","message":"Starting Storybook MCP Server...","service":"storybook-mcp-server","timestamp":"2026-07-22 09:52:37"}
+{"level":"info","message":"Successfully connected to Storybook instance","service":"storybook-mcp-server","timestamp":"2026-07-22 09:52:38"}
+{"level":"info","message":"Storybook MCP Server started successfully","service":"storybook-mcp-server","timestamp":"2026-07-22 09:52:38"}

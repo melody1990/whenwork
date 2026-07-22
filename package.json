@@ -1,0 +1,11 @@
+{
+  "name": "time-zone-checker",
+  "private": true,
+  "scripts": {
+    "start": "netlify dev",
+    "deploy": "netlify deploy --dir=. --prod"
+  },
+  "devDependencies": {
+    "netlify-cli": "^26.2.0"
+  }
+}
