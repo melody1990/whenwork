@@ -57,15 +57,27 @@
     50%      { transform: translate3d(0, 18px, 0) rotate(1.5deg); }
   }
   @keyframes wwTurn {
-    0%    { transform: translateX(0)      scale(1);     opacity: 1;   z-index: 5; }
-    12.5% { transform: translateX(9.9px)  scale(0.927); opacity: .90; z-index: 4; }
-    25%   { transform: translateX(14px)   scale(0.75);  opacity: .64; z-index: 3; }
-    37.5% { transform: translateX(9.9px)  scale(0.573); opacity: .39; z-index: 2; }
-    50%   { transform: translateX(0)      scale(0.5);   opacity: .28; z-index: 1; }
-    62.5% { transform: translateX(-9.9px) scale(0.573); opacity: .39; z-index: 2; }
-    75%   { transform: translateX(-14px)  scale(0.75);  opacity: .64; z-index: 3; }
-    87.5% { transform: translateX(-9.9px) scale(0.927); opacity: .90; z-index: 4; }
-    100%  { transform: translateX(0)      scale(1);     opacity: 1;   z-index: 5; }
+    0% { transform: translateX(0.00px) scale(1.000); opacity: 1.00; z-index: 5; }
+    5% { transform: translateX(0.28px) scale(1.000); opacity: 1.00; z-index: 5; }
+    10% { transform: translateX(2.13px) scale(0.997); opacity: 1.00; z-index: 5; }
+    15% { transform: translateX(6.30px) scale(0.973); opacity: 0.96; z-index: 5; }
+    20% { transform: translateX(11.49px) scale(0.893); opacity: 0.85; z-index: 4; }
+    25% { transform: translateX(14.00px) scale(0.750); opacity: 0.64; z-index: 3; }
+    30% { transform: translateX(11.49px) scale(0.607); opacity: 0.43; z-index: 2; }
+    35% { transform: translateX(6.30px) scale(0.527); opacity: 0.32; z-index: 1; }
+    40% { transform: translateX(2.13px) scale(0.503); opacity: 0.28; z-index: 1; }
+    45% { transform: translateX(0.28px) scale(0.500); opacity: 0.28; z-index: 1; }
+    50% { transform: translateX(0.00px) scale(0.500); opacity: 0.28; z-index: 1; }
+    55% { transform: translateX(-0.28px) scale(0.500); opacity: 0.28; z-index: 1; }
+    60% { transform: translateX(-2.13px) scale(0.503); opacity: 0.28; z-index: 1; }
+    65% { transform: translateX(-6.30px) scale(0.527); opacity: 0.32; z-index: 1; }
+    70% { transform: translateX(-11.49px) scale(0.607); opacity: 0.43; z-index: 2; }
+    75% { transform: translateX(-14.00px) scale(0.750); opacity: 0.64; z-index: 3; }
+    80% { transform: translateX(-11.49px) scale(0.893); opacity: 0.85; z-index: 4; }
+    85% { transform: translateX(-6.30px) scale(0.973); opacity: 0.96; z-index: 5; }
+    90% { transform: translateX(-2.13px) scale(0.997); opacity: 1.00; z-index: 5; }
+    95% { transform: translateX(-0.28px) scale(1.000); opacity: 1.00; z-index: 5; }
+    100% { transform: translateX(-0.00px) scale(1.000); opacity: 1.00; z-index: 5; }
   }
   .ww-orbit { position: relative; flex: 0 0 auto; width: 88px; height: 76px; }
   .ww-orb { position: absolute; top: 50%; left: 50%; will-change: transform, opacity; }
