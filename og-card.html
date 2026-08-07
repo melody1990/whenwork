@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- Source for og.png — the social share card. Regenerate with:
+     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+       --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 \
+       --screenshot=og.png file://$PWD/og-card.html -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  .card {
+    position: relative; width: 1200px; height: 630px;
+    font-family: Archivo, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1B2140;
+    background: linear-gradient(115deg,#F1F3FB 0%,#E7EEFD 22%,#F1EEFD 45%,#EBF8FD 68%,#F2F4FB 100%);
+    overflow: hidden;
+  }
+  .glow-a { position: absolute; top: -30%; left: -6%; width: 60%; height: 110%; border-radius: 999px;
+    background: radial-gradient(closest-side, rgba(59,91,253,0.40), rgba(59,91,253,0.14) 55%, transparent 78%); filter: blur(46px); }
+  .glow-b { position: absolute; top: 10%; left: 2%; width: 46%; height: 95%; border-radius: 999px;
+    background: radial-gradient(closest-side, rgba(53,198,244,0.34), rgba(53,198,244,0.12) 55%, transparent 78%); filter: blur(52px); }
+  .owl { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); height: 118%; width: auto;
+    opacity: 0.92; filter: saturate(1.08) drop-shadow(0 24px 60px rgba(31,44,120,0.28)); }
+  .content { position: absolute; left: 84px; top: 0; height: 100%; width: 700px;
+    display: flex; flex-direction: column; justify-content: center; }
+  .eyebrow { font-size: 20px; font-weight: 700; letter-spacing: 2.6px; text-transform: uppercase; color: #5A6183; }
+  .brand { margin-top: 18px; font-size: 128px; font-weight: 700; letter-spacing: -5px; line-height: 0.98; color: #1B2140; }
+  .sub { margin-top: 26px; font-size: 30px; font-weight: 550; line-height: 1.35; color: #414A73; max-width: 560px; text-wrap: balance; }
+  .accent { height: 6px; width: 96px; margin-top: 34px; border-radius: 999px; background: linear-gradient(90deg,#3B5BFD,#35C6F4); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+    <img class="owl" src="owl.png" alt="">
+    <div class="content">
+      <div class="eyebrow">Find the hour nobody's asleep</div>
+      <div class="brand">WhenWorks</div>
+      <div class="sub">The meeting time that works across every time zone.</div>
+      <div class="accent"></div>
+    </div>
+  </div>
+</body>
+</html>
