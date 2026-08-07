@@ -96,10 +96,13 @@
   </div>
 
   <header class="ww-header" style="position:relative;z-index:5;width:100%;max-width:1440px;margin:0 auto;box-sizing:border-box;padding:clamp(22px,3vw,38px) clamp(24px,6vw,120px) 20px;display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;animation:wwRise .6s cubic-bezier(0.22,1,0.36,1) both">
-    <div style="min-width:0">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#7C86AE">Find the hour nobody's asleep</div>
-      <h1 class="ww-brand" style="margin:10px 0 0;font-size:clamp(30px,3.4vw,44px);font-weight:650;letter-spacing:-2.1px;line-height:1.02;color:#1B2140">WhenWorks</h1>
-      <div class="ww-date" style="margin-top:8px;font-size:14px;font-weight:550;color:#5A6183;font-variant-numeric:tabular-nums">{{ dateLine }}</div>
+    <div class="ww-lockup" style="display:flex;align-items:center;gap:clamp(12px,1.4vw,20px);min-width:0">
+      <img class="ww-owl" src="./owl.png" alt="WhenWorks owl" style="flex:0 0 auto;height:clamp(58px,6.6vw,86px);width:auto;filter:drop-shadow(0 10px 24px rgba(31,44,120,0.22))">
+      <div style="min-width:0">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#7C86AE">Find the hour nobody's asleep</div>
+        <h1 class="ww-brand" style="margin:10px 0 0;font-size:clamp(30px,3.4vw,44px);font-weight:650;letter-spacing:-2.1px;line-height:1.02;color:#1B2140">WhenWorks</h1>
+        <div class="ww-date" style="margin-top:8px;font-size:14px;font-weight:550;color:#5A6183;font-variant-numeric:tabular-nums">{{ dateLine }}</div>
+      </div>
     </div>
     <div class="ww-spacer" style="flex:1"></div>
     <div class="ww-search" style="position:relative;flex:0 1 320px">
