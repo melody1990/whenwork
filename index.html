@@ -124,6 +124,15 @@
         </div>
       </sc-if>
     </div>
+    <button class="ww-share" onClick="{{ onShare }}" title="Copy shareable link" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;background:{{ shareBg }};-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border:1px solid {{ shareBorder }};border-radius:10px;padding:11px 16px;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:-0.2px;color:{{ shareColor }};cursor:pointer;box-shadow:0 6px 20px rgba(31,44,120,0.08);transition:box-shadow .25s cubic-bezier(0.22,1,0.36,1),color .2s,background .2s,border-color .2s" style-hover="box-shadow:0 0 0 3px rgba(59,91,253,0.18), 0 6px 20px rgba(31,44,120,0.1)">
+      <sc-if value="{{ copied }}" hint-placeholder-val="{{ false }}">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+      </sc-if>
+      <sc-if value="{{ notCopied }}" hint-placeholder-val="{{ true }}">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg>
+      </sc-if>
+      {{ shareLabel }}
+    </button>
   </header>
 
   <main style="position:relative;z-index:1;flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:1440px;margin:0 auto;box-sizing:border-box;padding:0 clamp(24px,6vw,120px) clamp(22px,4vw,38px);animation:wwRise .6s cubic-bezier(0.22,1,0.36,1) both;animation-delay:.08s">
@@ -283,7 +292,7 @@ class Component extends DCLogic {
       const s = JSON.parse(localStorage.getItem(KEY));
       if (s && Array.isArray(s.items) && s.items.length && s.items[0].tz) { items = s.items; hours = s.hours || {}; }
     } catch (e) {}
-    this.state = { items: items || DEFAULTS.map((x) => ({ ...x })), hours, q: "", focus: false, hover: null, editId: null, dragging: null, online: [], onlineBusy: false };
+    this.state = { items: items || DEFAULTS.map((x) => ({ ...x })), hours, q: "", focus: false, hover: null, editId: null, dragging: null, online: [], onlineBusy: false, copied: false };
     this.db = null;
   }
   componentDidMount() {
@@ -333,6 +342,26 @@ class Component extends DCLogic {
   }
   save() { try { localStorage.setItem(KEY, JSON.stringify({ items: this.state.items, hours: this.state.hours })); } catch (e) {} }
   set(patch) { this.setState(patch, () => this.save()); }
+  copyShareLink() {
+    const url = "https://whenwork.netlify.app/?v=1";
+    const done = () => {
+      this.setState({ copied: true });
+      clearTimeout(this._copyT);
+      this._copyT = setTimeout(() => this.setState({ copied: false }), 1800);
+    };
+    const fallback = () => {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        document.execCommand("copy"); document.body.removeChild(ta);
+      } catch (e) {}
+      done();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(fallback);
+    } else { fallback(); }
+  }
 
   flag(cc) { return String.fromCodePoint(...[...cc.toUpperCase()].map((ch) => 127397 + ch.charCodeAt(0))); }
   offMin(tz, d) {
@@ -745,6 +774,13 @@ class Component extends DCLogic {
 
     return {
       dateLine,
+      onShare: () => this.copyShareLink(),
+      shareLabel: this.state.copied ? "Copied" : "Share",
+      copied: this.state.copied,
+      notCopied: !this.state.copied,
+      shareBg: this.state.copied ? "rgba(5,88,250,0.1)" : "rgba(255,255,255,0.6)",
+      shareBorder: this.state.copied ? "rgba(5,88,250,0.4)" : "rgba(255,255,255,0.85)",
+      shareColor: this.state.copied ? "#0558FA" : "#1B2140",
       q: this.state.q,
       onQ: (e) => {
         const v = e.target.value;
