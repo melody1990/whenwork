@@ -39,6 +39,25 @@
     50%      { transform: translate3d(0, 18px, 0) rotate(1.5deg); }
   }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  @media (max-width: 720px) {
+    .ww-header { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; padding: 14px 16px 10px !important; }
+    .ww-brand { font-size: 26px !important; }
+    .ww-date { font-size: 12.5px !important; }
+    .ww-spacer { display: none !important; }
+    .ww-search { flex: 1 1 auto !important; width: 100% !important; }
+    .ww-results { left: 0 !important; right: 0 !important; }
+    .ww-columns { -webkit-overflow-scrolling: touch; }
+    .ww-column { flex: 0 0 156px !important; min-width: 156px !important; max-width: 156px !important; }
+    .ww-columns.ww-fill .ww-column { flex: 1 1 0 !important; min-width: 0 !important; max-width: none !important; }
+    .ww-col-header { padding: 12px 11px 10px !important; }
+    .ww-col-time { font-size: 25px !important; }
+    .ww-col-meta { font-size: 10px !important; gap: 4px !important; white-space: normal !important; flex-wrap: wrap !important; }
+  }
+  @media (max-width: 390px) {
+    .ww-column { flex-basis: 142px !important; min-width: 142px !important; max-width: 142px !important; }
+    .ww-columns.ww-fill .ww-column { flex: 1 1 0 !important; min-width: 0 !important; max-width: none !important; }
+    .ww-col-time { font-size: 23px !important; }
+  }
 </style>
 </helmet>
 <div style="height:100%;position:relative;display:flex;flex-direction:column;background:#E7EAF6;font-family:Archivo,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1B2140;overflow:hidden">
@@ -58,20 +77,20 @@
     </div>
   </div>
 
-  <header style="position:relative;z-index:5;width:100%;max-width:1240px;margin:0 auto;box-sizing:border-box;padding:clamp(22px,3vw,38px) clamp(24px,6vw,120px) 20px;display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;animation:wwRise .6s cubic-bezier(0.22,1,0.36,1) both">
+  <header class="ww-header" style="position:relative;z-index:5;width:100%;max-width:1240px;margin:0 auto;box-sizing:border-box;padding:clamp(22px,3vw,38px) clamp(24px,6vw,120px) 20px;display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;animation:wwRise .6s cubic-bezier(0.22,1,0.36,1) both">
     <div style="min-width:0">
       <div style="font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#7C86AE">Find the hour nobody's asleep</div>
-      <h1 style="margin:10px 0 0;font-size:clamp(30px,3.4vw,44px);font-weight:650;letter-spacing:-2.1px;line-height:1.02;color:#1B2140">WhenWorks</h1>
-      <div style="margin-top:8px;font-size:14px;font-weight:550;color:#5A6183;font-variant-numeric:tabular-nums">{{ dateLine }}</div>
+      <h1 class="ww-brand" style="margin:10px 0 0;font-size:clamp(30px,3.4vw,44px);font-weight:650;letter-spacing:-2.1px;line-height:1.02;color:#1B2140">WhenWorks</h1>
+      <div class="ww-date" style="margin-top:8px;font-size:14px;font-weight:550;color:#5A6183;font-variant-numeric:tabular-nums">{{ dateLine }}</div>
     </div>
-    <div style="flex:1"></div>
-    <div style="position:relative;flex:0 1 320px">
-      <input placeholder="Who else is on the call?" value="{{ q }}" onChange="{{ onQ }}" onFocus="{{ onQFocus }}" onBlur="{{ onQBlur }}" onKeyDown="{{ onQKey }}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.6);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border:1px solid rgba(255,255,255,0.85);border-radius:10px;padding:11px 14px 11px 38px;font-family:inherit;font-size:14px;font-weight:550;color:#1B2140;outline:none;box-shadow:0 6px 20px rgba(31,44,120,0.08);transition:box-shadow .25s cubic-bezier(0.22,1,0.36,1)" style-focus="box-shadow:0 0 0 3px rgba(59,91,253,0.18), 0 6px 20px rgba(31,44,120,0.1)">
+    <div class="ww-spacer" style="flex:1"></div>
+    <div class="ww-search" style="position:relative;flex:0 1 320px">
+      <input class="ww-search-input" placeholder="Who else is on the call?" value="{{ q }}" onChange="{{ onQ }}" onFocus="{{ onQFocus }}" onBlur="{{ onQBlur }}" onKeyDown="{{ onQKey }}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.6);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border:1px solid rgba(255,255,255,0.85);border-radius:10px;padding:11px 14px 11px 38px;font-family:inherit;font-size:14px;font-weight:550;color:#1B2140;outline:none;box-shadow:0 6px 20px rgba(31,44,120,0.08);transition:box-shadow .25s cubic-bezier(0.22,1,0.36,1)" style-focus="box-shadow:0 0 0 3px rgba(59,91,253,0.18), 0 6px 20px rgba(31,44,120,0.1)">
       <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);display:flex;pointer-events:none;color:#94A3B8">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
       </span>
       <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;top:calc(100% + 8px);left:0;right:0;background:rgba(255,255,255,0.72);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);border:1px solid rgba(255,255,255,0.85);border-radius:10px;box-shadow:0 18px 50px rgba(31,44,120,0.16);overflow:hidden;z-index:60">
+        <div class="ww-results" style="position:absolute;top:calc(100% + 8px);left:0;right:0;background:rgba(255,255,255,0.72);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);border:1px solid rgba(255,255,255,0.85);border-radius:10px;box-shadow:0 18px 50px rgba(31,44,120,0.16);overflow:hidden;z-index:60">
           <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
             <button onMouseDown="{{ r.onAdd }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;text-align:left;background:none;border:none;border-top:1px solid rgba(11,18,32,0.07);margin-top:-1px;padding:11px 14px;cursor:pointer;font-family:inherit;transition:background .18s cubic-bezier(0.22,1,0.36,1)" style-hover="background:#FBFBFD">
               <span style="font-size:15px">{{ r.flag }}</span>
@@ -91,11 +110,11 @@
 
   <main style="position:relative;z-index:1;flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:1240px;margin:0 auto;box-sizing:border-box;padding:0 clamp(24px,6vw,120px) clamp(22px,4vw,38px);animation:wwRise .6s cubic-bezier(0.22,1,0.36,1) both;animation-delay:.08s">
     <div style="flex:1;min-height:0;box-sizing:border-box;background:rgba(255,255,255,0.55);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border:1px solid rgba(255,255,255,0.8);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(31,44,120,0.14);display:flex">
-      <div style="flex:1;min-width:0;display:flex;overflow-x:auto;overflow-y:hidden;margin-left:-1px">
+      <div class="ww-columns {{ colsClass }}" style="flex:1;min-width:0;display:flex;overflow-x:auto;overflow-y:hidden;margin-left:-1px">
         <sc-for list="{{ cols }}" as="col" hint-placeholder-count="4">
-          <div data-col-id="{{ col.key }}" onMouseDown="{{ col.onColumnMouseDown }}" style="display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,0.7);cursor:grab;user-select:none;left:0;flex:{{ col.flexBasis }};min-width:{{ col.minW }};position:{{ col.pos }};z-index:{{ col.z }};background:{{ col.colBg }};opacity:{{ col.opacity }}">
+          <div class="ww-column" data-col-id="{{ col.key }}" onMouseDown="{{ col.onColumnMouseDown }}" style="display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,0.7);cursor:grab;user-select:none;left:0;flex:{{ col.flexBasis }};min-width:{{ col.minW }};position:{{ col.pos }};z-index:{{ col.z }};background:{{ col.colBg }};-webkit-backdrop-filter:{{ col.colBlur }};backdrop-filter:{{ col.colBlur }};opacity:{{ col.opacity }}">
 
-            <div style="position:relative;padding:18px 16px 15px;border-bottom:1px solid rgba(255,255,255,0.7);flex:0 0 auto">
+            <div class="ww-col-header" style="position:relative;padding:18px 16px 15px;border-bottom:1px solid rgba(255,255,255,0.7);flex:0 0 auto">
               <sc-if value="{{ col.isHome }}" hint-placeholder-val="{{ false }}">
                 <div style="position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,#3B5BFD,#35C6F4)"></div>
               </sc-if>
@@ -114,9 +133,9 @@
                 </sc-if>
               </div>
 
-              <div style="margin-top:9px;font-weight:600;line-height:1.04;color:#1B2140;font-variant-numeric:tabular-nums;font-size:{{ col.timeSize }};letter-spacing:{{ col.timeTrack }}">{{ col.time }}</div>
+              <div class="ww-col-time" style="margin-top:9px;font-weight:600;line-height:1.04;color:#1B2140;font-variant-numeric:tabular-nums;font-size:{{ col.timeSize }};letter-spacing:{{ col.timeTrack }}">{{ col.time }}</div>
 
-              <div style="margin-top:7px;display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:550;color:#8A93B8;white-space:nowrap;font-variant-numeric:tabular-nums">
+              <div class="ww-col-meta" style="margin-top:7px;display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:550;color:#8A93B8;white-space:nowrap;font-variant-numeric:tabular-nums">
                 <sc-if value="{{ col.wknd }}" hint-placeholder-val="{{ false }}">
                   <span style="color:#D97706;font-weight:650">{{ col.day }}</span>
                 </sc-if>
@@ -637,7 +656,7 @@ class Component extends DCLogic {
       return {
         key: id, isHome, notHome: !isHome,
         flexBasis: "1 0 200px", minW: "200px",
-        colBg: isHome ? "rgba(255,255,255,0.42)" : "transparent", pos: isHome ? "sticky" : "relative", z: isHome ? 6 : 1,
+        colBg: isHome ? "rgba(255,255,255,0.74)" : "transparent", colBlur: isHome ? "blur(26px) saturate(160%)" : "none", pos: isHome ? "sticky" : "relative", z: isHome ? 6 : 1,
         timeSize: "clamp(25px,2.1vw,32px)", timeTrack: "-1.2px",
         flag: this.flag(it.cc), name: it.name,
         time: this.fmtHM(p.h, p.m), day: p.wd, wknd, weekday: !wknd,
@@ -684,7 +703,7 @@ class Component extends DCLogic {
       searchOpen, results,
       noResults: searchOpen && results.length === 0 && (this.state.onlineBusy || !!this.db),
       searchNote: this.state.onlineBusy ? "Searching…" : "No matches",
-      cols, legendRows, homeName: home.name,
+      cols, colsClass: cols.length <= 3 ? "ww-fill" : "", legendRows, homeName: home.name,
       nowTop: pct(nowFrac), nowChipTop: `calc(${(nowFrac * 100).toFixed(3)}% - 10px)`, nowChipLabel: this.fmtHM(homeParts.h, homeParts.m),
       startOpts
     };
