@@ -57,20 +57,25 @@
     50%      { transform: translate3d(0, 18px, 0) rotate(1.5deg); }
   }
   @keyframes wwTurn {
-    0%    { transform: translateX(0)       scale(1);     opacity: 1;   z-index: 5; }
-    12.5% { transform: translateX(14.1px)  scale(0.941); opacity: .90; z-index: 4; }
-    25%   { transform: translateX(20px)    scale(0.8);   opacity: .66; z-index: 3; }
-    37.5% { transform: translateX(14.1px)  scale(0.659); opacity: .42; z-index: 2; }
-    50%   { transform: translateX(0)       scale(0.6);   opacity: .32; z-index: 1; }
-    62.5% { transform: translateX(-14.1px) scale(0.659); opacity: .42; z-index: 2; }
-    75%   { transform: translateX(-20px)   scale(0.8);   opacity: .66; z-index: 3; }
-    87.5% { transform: translateX(-14.1px) scale(0.941); opacity: .90; z-index: 4; }
-    100%  { transform: translateX(0)       scale(1);     opacity: 1;   z-index: 5; }
+    0%    { transform: translateX(0)      scale(1);     opacity: 1;   z-index: 5; }
+    12.5% { transform: translateX(9.9px)  scale(0.927); opacity: .90; z-index: 4; }
+    25%   { transform: translateX(14px)   scale(0.75);  opacity: .64; z-index: 3; }
+    37.5% { transform: translateX(9.9px)  scale(0.573); opacity: .39; z-index: 2; }
+    50%   { transform: translateX(0)      scale(0.5);   opacity: .28; z-index: 1; }
+    62.5% { transform: translateX(-9.9px) scale(0.573); opacity: .39; z-index: 2; }
+    75%   { transform: translateX(-14px)  scale(0.75);  opacity: .64; z-index: 3; }
+    87.5% { transform: translateX(-9.9px) scale(0.927); opacity: .90; z-index: 4; }
+    100%  { transform: translateX(0)      scale(1);     opacity: 1;   z-index: 5; }
   }
-  .ww-orbit { position: relative; flex: 0 0 auto; width: 84px; height: 60px; }
+  .ww-orbit { position: relative; flex: 0 0 auto; width: 88px; height: 76px; }
   .ww-orb { position: absolute; top: 50%; left: 50%; will-change: transform, opacity; }
-  .ww-moon { width: 30px; height: 38px; margin: -19px 0 0 -15px; transform: translateX(-18px); animation: wwTurn 15s linear infinite; filter: drop-shadow(0 5px 12px rgba(31,44,120,0.28)); }
-  .ww-sun  { width: 43px; height: 44px; margin: -22px 0 0 -21.5px; transform: translateX(18px); animation: wwTurn 15s linear infinite; animation-delay: -7.5s; filter: drop-shadow(0 5px 12px rgba(31,44,120,0.28)); }
+  .ww-moon { width: 53px; height: 68px; margin: -34px 0 0 -26.5px; transform: translateX(-16px); animation: wwTurn 15s linear infinite; filter: drop-shadow(0 6px 14px rgba(31,44,120,0.26)); }
+  .ww-sun  { width: 66px; height: 68px; margin: -34px 0 0 -33px; transform: translateX(16px); animation: wwTurn 15s linear infinite; animation-delay: -7.5s; filter: drop-shadow(0 6px 14px rgba(31,44,120,0.26)); }
+  @media (max-width: 720px) {
+    .ww-orbit { width: 68px; height: 58px; }
+    .ww-moon { width: 39px; height: 50px; margin: -25px 0 0 -19.5px; }
+    .ww-sun  { width: 48px; height: 50px; margin: -25px 0 0 -24px; }
+  }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
   @media (max-width: 720px) {
     .ww-header { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; padding: 14px 16px 10px !important; }
@@ -118,8 +123,10 @@
       </div>
       <div style="min-width:0">
         <div style="font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#7C86AE">Find the hour nobody's asleep</div>
-        <h1 class="ww-brand" style="margin:10px 0 0;font-size:clamp(30px,3.4vw,44px);font-weight:650;letter-spacing:-2.1px;line-height:1.02;color:#1B2140">WhenWorks</h1>
-        <div class="ww-date" style="margin-top:8px;font-size:14px;font-weight:550;color:#5A6183;font-variant-numeric:tabular-nums">{{ dateLine }}</div>
+        <div style="display:flex;align-items:baseline;gap:clamp(10px,1vw,16px);flex-wrap:wrap;margin-top:10px">
+          <h1 class="ww-brand" style="margin:0;font-size:clamp(30px,3.4vw,44px);font-weight:650;letter-spacing:-2.1px;line-height:1.02;color:#1B2140">WhenWorks</h1>
+          <div class="ww-date" style="font-size:14px;font-weight:550;color:#5A6183;font-variant-numeric:tabular-nums">{{ dateLine }}</div>
+        </div>
       </div>
     </div>
     <div class="ww-spacer" style="flex:1"></div>
