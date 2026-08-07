@@ -180,7 +180,7 @@
               </sc-for>
 
               <sc-for list="{{ col.bandSegs }}" as="b" hint-placeholder-count="1">
-                <div title="Click to edit working hours" onClick="{{ b.onClick }}" style="position:absolute;left:44px;right:12px;display:flex;justify-content:flex-start;align-items:flex-start;padding:5px 0 0 9px;box-sizing:border-box;cursor:pointer;font-size:11px;font-weight:650;letter-spacing:-0.1px;box-shadow:0 10px 26px rgba(31,44,120,0.13);top:{{ b.top }};height:{{ b.height }};background:{{ b.bg }};border:{{ b.border }};border-radius:{{ b.radius }};color:{{ b.labelColor }}">
+                <div title="Drag to move · click to edit" onMouseDown="{{ b.onMove }}" onClick="{{ b.onClick }}" style="position:absolute;left:44px;right:12px;display:flex;justify-content:flex-start;align-items:flex-start;padding:5px 0 0 9px;box-sizing:border-box;cursor:{{ b.cursor }};font-size:11px;font-weight:650;letter-spacing:-0.1px;box-shadow:0 10px 26px rgba(31,44,120,0.13);top:{{ b.top }};height:{{ b.height }};background:{{ b.bg }};border:{{ b.border }};border-radius:{{ b.radius }};color:{{ b.labelColor }}">
                   <span>{{ b.label }}</span>
                   <sc-if value="{{ b.hasStart }}" hint-placeholder-val="{{ true }}">
                     <div title="Drag to change start time" onMouseDown="{{ b.onStartDown }}" style="position:absolute;top:-7px;left:0;right:0;height:14px;cursor:ns-resize;display:flex;justify-content:center;align-items:center;z-index:6">
@@ -394,6 +394,47 @@ class Component extends DCLogic {
       window.removeEventListener("mouseup", up);
       this.save();
       setTimeout(() => { this.suppressClick = false; }, 80);
+    };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+  }
+  startWindowDrag(e, id) {
+    if (e.button !== 0) return;
+    const body = e.currentTarget.closest("[data-tzbody]");
+    if (!body) return;
+    e.stopPropagation();
+    const rect = body.getBoundingClientRect();
+    const startY = e.clientY;
+    const [cs, ce] = this.hoursFor(id);
+    const dur = this.hourSpan(cs, ce);
+    const prevSelect = document.body.style.userSelect;
+    let moved = false;
+    const move = (ev) => {
+      const dy = ev.clientY - startY;
+      if (!moved) {
+        if (Math.abs(dy) < 3) return;
+        moved = true;
+        this.suppressClick = true;
+        document.body.style.userSelect = "none";
+        this.setState({ winDrag: id, editId: null });
+      }
+      ev.preventDefault();
+      const shiftH = (dy / rect.height) * 24;
+      let ns = Math.round(norm((cs + shiftH) * 60) / 30) / 2;
+      if (ns >= 24) ns -= 24;
+      let ne = ns + dur;
+      if (ne > 24) ne -= 24;
+      this.setState((s) => {
+        const cur = s.hours[id] || [9, 18];
+        if (cur[0] === ns && cur[1] === ne) return null;
+        return { hours: { ...s.hours, [id]: [ns, ne] } };
+      });
+    };
+    const up = () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseup", up);
+      document.body.style.userSelect = prevSelect;
+      if (moved) { this.setState({ winDrag: null }, () => this.save()); setTimeout(() => { this.suppressClick = false; }, 80); }
     };
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
@@ -640,6 +681,8 @@ class Component extends DCLogic {
           hasStart: bandRaw.length === 1 || e === 1440, hasEnd: bandRaw.length === 1 || s === 0, handleColor,
           onStartDown: (ev) => this.startHourDrag(ev, it.id, "s", delta),
           onEndDown: (ev) => this.startHourDrag(ev, it.id, "e", delta),
+          cursor: this.state.winDrag === it.id ? "grabbing" : "grab",
+          onMove: (ev) => this.startWindowDrag(ev, it.id),
           onClick: () => { if (this.suppressClick) return; this.setState({ editId: this.state.editId === it.id ? null : it.id }); } };
       });
       const bandStartFrac = norm(ws * 60 - delta) / 1440;
