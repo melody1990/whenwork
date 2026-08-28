@@ -212,7 +212,7 @@
                 <span>·</span>
                 <span>{{ col.offsetLabel }}</span>
                 <span>·</span>
-                <button title="Edit working hours" onClick="{{ col.onEdit }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:600;color:#475569;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#CBD5E1;transition:color .2s cubic-bezier(0.22,1,0.36,1)" style-hover="color:#0558FA">{{ col.hoursLabel }}</button>
+                <button data-editbtn="1" title="Edit working hours" onClick="{{ col.onEdit }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:600;color:#475569;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#CBD5E1;transition:color .2s cubic-bezier(0.22,1,0.36,1)" style-hover="color:#0558FA">{{ col.hoursLabel }}</button>
               </div>
             </div>
 
@@ -269,7 +269,7 @@
               </sc-if>
 
               <sc-if value="{{ col.editing }}" hint-placeholder-val="{{ false }}">
-                <div style="position:absolute;left:10px;right:10px;background:rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%);border:1px solid rgba(255,255,255,0.9);border-radius:10px;box-shadow:0 18px 50px rgba(31,44,120,0.18);padding:14px;z-index:20;top:{{ col.editTop }}">
+                <div data-editpopup="1" style="position:absolute;left:10px;right:10px;background:rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%);border:1px solid rgba(255,255,255,0.9);border-radius:10px;box-shadow:0 18px 50px rgba(31,44,120,0.18);padding:14px;z-index:20;top:{{ col.editTop }}">
                   <div style="display:flex;align-items:center;gap:8px">
                     <span style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#94A3B8">Working hours</span>
                     <span style="flex:1"></span>
@@ -352,6 +352,13 @@ class Component extends DCLogic {
       if (!prev || prev.id !== id || Math.abs(prev.f - f) > 0.0015) this.setState({ hover: { id, f } });
     };
     document.addEventListener("mousemove", this.onNativeHoverMove, true);
+    this.onDocMouseDown = (e) => {
+      if (this.state.editId == null) return;
+      const t = e.target;
+      if (t && t.closest && (t.closest("[data-editpopup]") || t.closest("[data-editbtn]"))) return;
+      this.setState({ editId: null });
+    };
+    document.addEventListener("mousedown", this.onDocMouseDown, true);
     this.initParallax();
     import("./cities.js").then((m) => { this.db = m.CITIES; this.forceUpdate(); }).catch(() => { this.db = []; });
   }
@@ -381,6 +388,7 @@ class Component extends DCLogic {
     if (this.onParallaxMove) window.removeEventListener("mousemove", this.onParallaxMove);
     clearInterval(this.timer);
     document.removeEventListener("mousemove", this.onNativeHoverMove, true);
+    if (this.onDocMouseDown) document.removeEventListener("mousedown", this.onDocMouseDown, true);
   }
   save() { try { localStorage.setItem(KEY, JSON.stringify({ items: this.state.items, hours: this.state.hours })); } catch (e) {} }
   set(patch) { this.setState(patch, () => this.save()); }
