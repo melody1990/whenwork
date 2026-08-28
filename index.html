@@ -229,8 +229,10 @@
               </sc-for>
 
               <sc-for list="{{ col.bandSegs }}" as="b" hint-placeholder-count="1">
-                <div title="Drag to move · click to edit" onMouseDown="{{ b.onMove }}" onClick="{{ b.onClick }}" style="position:absolute;left:44px;right:12px;display:flex;justify-content:flex-start;align-items:flex-start;padding:5px 0 0 9px;box-sizing:border-box;cursor:{{ b.cursor }};font-size:11px;font-weight:650;letter-spacing:-0.1px;box-shadow:0 10px 26px rgba(31,44,120,0.13);top:{{ b.top }};height:{{ b.height }};background:{{ b.bg }};border:{{ b.border }};border-radius:{{ b.radius }};color:{{ b.labelColor }}">
-                  <span>{{ b.label }}</span>
+                <div title="Drag to move · click to edit" onMouseDown="{{ b.onMove }}" onClick="{{ b.onClick }}" style="position:absolute;left:44px;right:12px;box-sizing:border-box;overflow:hidden;cursor:{{ b.cursor }};box-shadow:0 10px 26px rgba(31,44,120,0.13);top:{{ b.top }};height:{{ b.height }};background:{{ b.bg }};border:{{ b.border }};border-radius:{{ b.radius }};color:{{ b.labelColor }}">
+                  <div style="position:absolute;top:9px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;letter-spacing:-0.2px;font-variant-numeric:tabular-nums;pointer-events:none">{{ b.startLabel }}</div>
+                  <div style="position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;font-size:12px;font-weight:600;letter-spacing:0.2px;color:#AEB4D0;pointer-events:none">{{ b.totalLabel }}</div>
+                  <div style="position:absolute;bottom:9px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;letter-spacing:-0.2px;font-variant-numeric:tabular-nums;pointer-events:none">{{ b.endLabel }}</div>
                   <sc-if value="{{ b.hasStart }}" hint-placeholder-val="{{ true }}">
                     <div title="Drag to change start time" onMouseDown="{{ b.onStartDown }}" style="position:absolute;top:-7px;left:0;right:0;height:14px;cursor:ns-resize;display:flex;justify-content:center;align-items:center;z-index:6">
                       <div style="width:30px;height:4px;border-radius:999px;background:{{ b.handleColor }}"></div>
@@ -423,6 +425,11 @@ class Component extends DCLogic {
   }
   fmtMin(mins) { const mm = norm(Math.round(mins)); return this.fmtHM(Math.floor(mm / 60) % 24, mm % 60); }
   fmtHC(h) { const hh = Math.floor(h), mm = Math.round((h - hh) * 60); return mm ? P2(hh) + ":" + P2(mm) : P2(hh); }
+  fmtClock(h) {
+    const mm = norm(Math.round(h * 60)), hh = Math.floor(mm / 60), m = mm % 60;
+    if (this.props.hour12 !== false) return P2(hh % 12 || 12) + ":" + P2(m) + (hh < 12 ? "am" : "pm");
+    return P2(hh) + ":" + P2(m);
+  }
   hourSpan(start, end) { const span = end - start; return span > 0 ? span : span + 24; }
   hoursLabel(start, end) { return this.fmtHC(start) + "–" + this.fmtHC(end) + (end <= start ? " (+1d)" : ""); }
   endOptions(start) {
@@ -741,13 +748,16 @@ class Component extends DCLogic {
 
       let biggestB = -1, bb = -1;
       bandRaw.forEach(([s, e], i) => { if (e - s > biggestB) { biggestB = e - s; bb = i; } });
+      const durH = this.hourSpan(ws, we);
+      const totalLabel = (Number.isInteger(durH) ? durH : durH.toFixed(1)) + " hr total";
+      const startClock = this.fmtClock(ws), endClock = this.fmtClock(we);
       const bandSegs = bandRaw.map(([s, e], i) => {
         let radius = "12px";
         if (bandRaw.length === 2) radius = e === 1440 ? "12px 12px 0 0" : "0 0 12px 12px";
-        let label = "";
-        if (i === bb) label = (isHome ? "you · " : "") + this.hoursLabel(ws, we);
-        return { key: "b" + i, top: pct(s / 1440), height: pct((e - s) / 1440), bg: bandBg, radius, border: bandBorder, label, labelColor: bandText,
-          hasStart: bandRaw.length === 1 || e === 1440, hasEnd: bandRaw.length === 1 || s === 0, handleColor,
+        const hasStart = bandRaw.length === 1 || e === 1440, hasEnd = bandRaw.length === 1 || s === 0;
+        return { key: "b" + i, top: pct(s / 1440), height: pct((e - s) / 1440), bg: bandBg, radius, border: bandBorder, labelColor: bandText,
+          startLabel: hasStart ? startClock : "", endLabel: hasEnd ? endClock : "", totalLabel: i === bb ? totalLabel : "",
+          hasStart, hasEnd, handleColor,
           onStartDown: (ev) => this.startHourDrag(ev, it.id, "s", delta),
           onEndDown: (ev) => this.startHourDrag(ev, it.id, "e", delta),
           cursor: this.state.winDrag === it.id ? "grabbing" : "grab",
