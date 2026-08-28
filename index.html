@@ -229,7 +229,7 @@
               </sc-for>
 
               <sc-for list="{{ col.bandSegs }}" as="b" hint-placeholder-count="1">
-                <div title="Drag to move · click to edit" onMouseDown="{{ b.onMove }}" onClick="{{ b.onClick }}" style="position:absolute;left:44px;right:12px;box-sizing:border-box;overflow:hidden;cursor:{{ b.cursor }};box-shadow:0 10px 26px rgba(31,44,120,0.13);top:{{ b.top }};height:{{ b.height }};background:{{ b.bg }};border:{{ b.border }};border-radius:{{ b.radius }};color:{{ b.labelColor }}">
+                <div title="Drag to move" onMouseDown="{{ b.onMove }}" style="position:absolute;left:44px;right:12px;box-sizing:border-box;overflow:hidden;cursor:{{ b.cursor }};box-shadow:0 10px 26px rgba(31,44,120,0.13);top:{{ b.top }};height:{{ b.height }};background:{{ b.bg }};border:{{ b.border }};border-radius:{{ b.radius }};color:{{ b.labelColor }}">
                   <div style="position:absolute;top:9px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;letter-spacing:-0.2px;font-variant-numeric:tabular-nums;pointer-events:none">{{ b.startLabel }}</div>
                   <div style="position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;font-size:12px;font-weight:600;letter-spacing:0.2px;color:#AEB4D0;pointer-events:none">{{ b.totalLabel }}</div>
                   <div style="position:absolute;bottom:9px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;letter-spacing:-0.2px;font-variant-numeric:tabular-nums;pointer-events:none">{{ b.endLabel }}</div>
@@ -761,8 +761,7 @@ class Component extends DCLogic {
           onStartDown: (ev) => this.startHourDrag(ev, it.id, "s", delta),
           onEndDown: (ev) => this.startHourDrag(ev, it.id, "e", delta),
           cursor: this.state.winDrag === it.id ? "grabbing" : "grab",
-          onMove: (ev) => this.startWindowDrag(ev, it.id),
-          onClick: () => { if (this.suppressClick) return; this.setState({ editId: this.state.editId === it.id ? null : it.id }); } };
+          onMove: (ev) => this.startWindowDrag(ev, it.id) };
       });
       const bandStartFrac = norm(ws * 60 - delta) / 1440;
       const editTop = `min(calc(${(bandStartFrac * 100).toFixed(2)}% + 10px), calc(100% - 186px))`;
