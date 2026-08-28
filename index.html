@@ -192,9 +192,6 @@
                 <sc-if value="{{ col.isHome }}" hint-placeholder-val="{{ false }}">
                   <span style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#3B5BFD">Home</span>
                 </sc-if>
-                <sc-if value="{{ col.notHome }}" hint-placeholder-val="{{ true }}">
-                  <button title="Set as home" onClick="{{ col.onMakeHome }}" style="background:none;border:none;cursor:pointer;padding:2px;font-family:inherit;font-size:13px;line-height:1;color:#CBD5E1;transition:color .2s cubic-bezier(0.22,1,0.36,1)" style-hover="color:#0558FA">⌂</button>
-                </sc-if>
                 <sc-if value="{{ col.canRemove }}" hint-placeholder-val="{{ true }}">
                   <button title="Remove" onClick="{{ col.onRemove }}" style="background:none;border:none;cursor:pointer;padding:2px 0 2px 4px;font-family:inherit;font-size:12px;line-height:1;color:#CBD5E1;transition:color .2s cubic-bezier(0.22,1,0.36,1)" style-hover="color:#DC2626">✕</button>
                 </sc-if>
@@ -798,7 +795,7 @@ class Component extends DCLogic {
       const id = it.id;
       const wknd = p.wd === "Sat" || p.wd === "Sun";
       return {
-        key: id, isHome, notHome: !isHome,
+        key: id, isHome,
         flexBasis: "1 0 200px", minW: "200px",
         colBg: isHome ? "rgba(255,255,255,0.74)" : "transparent", colBlur: isHome ? "blur(26px) saturate(160%)" : "none", pos: isHome ? "sticky" : "relative", z: isHome ? 6 : 1,
         timeSize: "clamp(25px,2.1vw,32px)", timeTrack: "-1.2px",
@@ -817,7 +814,6 @@ class Component extends DCLogic {
         onWs: (e) => { const v = +e.target.value; this.setState((s) => { const h = { ...s.hours }; const cur = this.hoursFor(id); h[id] = [v, v === cur[1] ? (v < 23.5 ? v + 0.5 : 24) : cur[1]]; return { hours: h }; }, () => this.save()); },
         onWe: (e) => { const v = +e.target.value; this.setState((s) => { const h = { ...s.hours }; const cur = this.hoursFor(id); h[id] = [cur[0], v === cur[0] ? (v < 23.5 ? v + 0.5 : 24) : v]; return { hours: h }; }, () => this.save()); },
         onRemove: () => { const h = { ...this.state.hours }; delete h[id]; this.set({ items: this.state.items.filter((x) => x.id !== id), hours: h, editId: null }); },
-        onMakeHome: () => { const me = this.state.items.find((x) => x.id === id); this.set({ items: [me, ...this.state.items.filter((x) => x.id !== id)] }); },
         onColumnMouseDown: (e) => this.startColumnDrag(e, id)
       };
     });
